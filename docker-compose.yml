@@ -1,0 +1,24 @@
+version: "3"
+
+services:
+  worker:
+    build:
+      context: .
+    environment:
+      CELERY_BROKER_URL: amqp://admin:password@rabbitmq/selenium
+      CELERY_BACKEND_URL: redis://redis
+
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: password
+      RABBITMQ_DEFAULT_VHOST: selenium
+
+    ports:
+      - 5672:5672
+
+  redis:
+    image: redis:6.0-alpine
+    ports:
+      - 6379:6379
